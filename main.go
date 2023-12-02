@@ -129,6 +129,7 @@ func (eb *ExampleBank) AuthorizeHandler() gin.HandlerFunc {
 
 		// Verify the signature is valid from the trusted key
 		if !ecdsa.VerifyASN1(account.TrustedKey.(*ecdsa.PublicKey), digest, request.Signature) {
+			logrus.Errorf("Bad signature")
 			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "transaction signature is invalid"})
 			return
 		}
